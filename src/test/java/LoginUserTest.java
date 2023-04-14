@@ -16,9 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LoginUserTest{
     private User user;
-    private UserCredentials userCredentials;
     private UserApi userApi;
-    private ValidatableResponse validatableResponse;
     String bearerToken;
 
 
@@ -34,22 +32,18 @@ public class LoginUserTest{
         userApi = new UserApi();
         user = new User("raikiri@yandex.ru", "konoha123", "Kakashi");
     }
-//    @After
-//    public void cleanData() {
-//        if (validatableResponse != null) {
-//            String bearerToken = validatableResponse.extract().path("accessToken");
-//            userApi.delete(bearerToken);
-//        }
-//    }
+
     @After
     public void cleanData() {
-        userApi.delete(bearerToken);
+        if (bearerToken != null) {
+            userApi.delete(bearerToken);
+        }
     }
     @Test
     @DisplayName("loging with created account")
     @Description("creating account in advance, checking if login is successful")
     public void loginUserWithCreatedAccount() {
-        UserApi userApi = new UserApi();
+
         ValidatableResponse response = new UserApi().login(user);
         int statusCode = response.extract().statusCode();
         assertEquals("Successful login", HTTP_OK, statusCode);

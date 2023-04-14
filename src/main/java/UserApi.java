@@ -43,17 +43,14 @@ public class UserApi extends Main {
     }
 
 
+
     @Step
-    public void delete(String bearerToken) {
-        if (bearerToken == null || bearerToken == "") {
-            return;
-        }
-        given()
+    public ValidatableResponse delete(String bearerToken) {
+       return given()
                 .spec(getBaseReqSpec())
-                .auth().oauth2(bearerToken.replace("Bearer ", ""))
+               .header("authorization", bearerToken)
                 .when()
                 .delete(BASE_URI + "/user")
-                .then()
-                .statusCode(202);
+                .then();
     }
 }

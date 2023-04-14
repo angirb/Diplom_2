@@ -14,10 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class UpdateUserTest extends UserApi {
     private UserApi userApi;
     private User user;
-    private UserCredentials userCredentials;
     String bearerToken;
-    private String accessToken;
-    private ValidatableResponse validatableResponse;
 
 
 
@@ -37,23 +34,18 @@ public class UpdateUserTest extends UserApi {
     }
     @After
     public void cleanData() {
-        if (validatableResponse != null) {
-            String bearerToken = validatableResponse.extract().path("accessToken");
+        if (bearerToken != null) {
+            userApi.delete(bearerToken);
         }
     }
-//    @After
-//    public void cleanData() {
-//        userApi.delete(bearerToken);
-//    }
+
     private String generateRandomEmail() {
         String generatedString = RandomStringUtils.randomAlphabetic(10);
-        String newEmail = generatedString + "@yandex.ru";
-        return newEmail;
+        return generatedString + "@yandex.ru";
+
     }
     private String generateRandomPassword() {
-        String generatedString = RandomStringUtils.randomAlphabetic(10);
-        String newPassword = generatedString;
-        return newPassword;
+        return RandomStringUtils.randomAlphabetic(10);
     }
 
 
@@ -100,7 +92,6 @@ public class UpdateUserTest extends UserApi {
     @Description("check if unauthorized user can be modified")
     public void changeUserEmailPasswordWithOutAuth() {
         ValidatableResponse response = userApi.login(user);
-        String accessToken = response.extract().path("accessToken");
         bearerToken = " ";
         String newEmail = generateRandomEmail();
         String newPassword = generateRandomPassword();

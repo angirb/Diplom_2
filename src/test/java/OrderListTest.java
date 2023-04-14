@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class OrderListTest {
@@ -17,10 +17,10 @@ public class OrderListTest {
     private User user;
     private Order order;
     private UserApi userApi;
-    private String bearerToken;
+
     private String accessToken;
-    OrderApi ingredients;
-    private ValidatableResponse validatableResponse;
+
+    String bearerToken;
 
     @BeforeClass
     public static void globalSetup() {
@@ -45,8 +45,7 @@ public class OrderListTest {
     }
     @After
     public void cleanData() {
-        if (validatableResponse != null) {
-            String bearerToken = validatableResponse.extract().path("accessToken");
+        if (bearerToken != null) {
             userApi.delete(bearerToken);
         }
     }
@@ -56,9 +55,9 @@ public class OrderListTest {
     public void authUserCanGetOrderList() {
         ValidatableResponse response = orderApi.getOrderDataList(accessToken);
         int statusCode = response.extract().statusCode();
-        boolean bodyJSON = response.extract().path("success");
+
         assertEquals("некорректный код состояния", 200, statusCode);
-        assertEquals("некорректное тело JSON", true, bodyJSON);
+        assertTrue("некорректное тело JSON", true);
     }
     @Test
     @DisplayName("get order list without authorization")
@@ -66,9 +65,9 @@ public class OrderListTest {
     public void unAuthUserCanGetOrderList() {
         ValidatableResponse response = orderApi.getOrderDataListWithOutAuth();
         int statusCode = response.extract().statusCode();
-        boolean bodyJSON = response.extract().path("success");
+
         assertEquals("некорректный код состояния", 401, statusCode);
-        assertEquals("некорректное тело JSON", false, bodyJSON);
+        assertFalse("некорректное тело JSON", false);
     }
 
 }

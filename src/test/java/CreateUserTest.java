@@ -1,11 +1,9 @@
-
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.response.ValidatableResponse;
 import org.junit.*;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -14,7 +12,7 @@ public class CreateUserTest extends UserApi {
 
     private UserApi userApi;
     private User user;
-    private ValidatableResponse validatableResponse;
+
     String bearerToken;
 
     @BeforeClass
@@ -32,9 +30,10 @@ public class CreateUserTest extends UserApi {
 
     @After
     public void cleanData() {
-        userApi.delete(bearerToken);
+        if (bearerToken != null) {
+            userApi.delete(bearerToken);
+        }
     }
-
     @Test
     @DisplayName("creating user with random data")
     @Description("using random generator testing creating user in the system")
