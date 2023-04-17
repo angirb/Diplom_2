@@ -45,9 +45,10 @@ public class CreateOrderTest extends OrderApi {
         }
     }
 
-    @Test
+
     @DisplayName("testing authorized user creating order with ingredients")
     @Description("testing if authorized user can create an order")
+    @Test
     public void createOrderTestAuthUser() {
 
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -61,14 +62,16 @@ public class CreateOrderTest extends OrderApi {
         order = new Order(ingredients);
         ValidatableResponse orderResponse = orderApi.createOrder(accessToken, order);
         int statusCode = orderResponse.extract().statusCode();
+        boolean bodyJSON = orderResponse.extract().path("success");
 
         assertEquals("некорректный код состояния", 200, statusCode);
-        assertTrue("некорректное тело JSON", true);
+        assertTrue(bodyJSON);
     }
 
-    @Test
+
     @DisplayName("testing authorized user creating order without ingredients")
     @Description("checking if authorized user can create order without ingredients")
+    @Test
     public void createOrderWithOutIngredients() {
 
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -81,11 +84,13 @@ public class CreateOrderTest extends OrderApi {
         int statusCode = orderResponse.extract().statusCode();
         boolean bodyJSON = orderResponse.extract().path("success");
         assertEquals("некорректный код состояния", 400, statusCode);
+        assertFalse(bodyJSON);
 
     }
-    @Test
+
     @DisplayName("test with unauthorized user creating order with ingredients")
     @Description("creating order by unauthorized user with ingredients")
+    @Test
     public void createOrderTestWithOutAuthWithIngredients() {
 
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -101,11 +106,12 @@ public class CreateOrderTest extends OrderApi {
         int statusCode = orderResponse.extract().statusCode();
         boolean bodyJSON = orderResponse.extract().path("success");
         assertEquals("некорректный код состояния", 200, statusCode);
-        assertTrue("некорректное тело JSON", true);
+        assertTrue(bodyJSON);
     }
-    @Test
+
     @DisplayName("test with unauthorized user creating order without ingredients")
     @Description("creating order by unauthorized user without ingredients")
+    @Test
     public void createOrderTestWithOutAuthWithOutIngredients() {
 
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -118,11 +124,13 @@ public class CreateOrderTest extends OrderApi {
         int statusCode = orderResponse.extract().statusCode();
         boolean bodyJSON = orderResponse.extract().path("success");
         assertEquals("некорректный код состояния", 400, statusCode);
-//        assertEquals("некорректное тело JSON", false, bodyJSON);
+        assertFalse(bodyJSON);
+
     }
-    @Test
+
     @DisplayName("testing authorized user creating order with an incorrect hash of ingredients")
     @Description("check if authorized user can create an order when hash of ingredients is incorrect")
+    @Test
     public void createOrderTestAuthUserIngredientsNotValid() {
 
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -136,7 +144,6 @@ public class CreateOrderTest extends OrderApi {
         order = new Order(ingredients);
         ValidatableResponse orderResponse = orderApi.createOrder(accessToken, order);
         int statusCode = orderResponse.extract().statusCode();
-
         assertEquals("некорректный код состояния", 500, statusCode);
 
     }

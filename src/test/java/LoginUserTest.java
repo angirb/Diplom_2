@@ -39,9 +39,10 @@ public class LoginUserTest{
             userApi.delete(bearerToken);
         }
     }
-    @Test
+
     @DisplayName("loging with created account")
     @Description("creating account in advance, checking if login is successful")
+    @Test
     public void loginUserWithCreatedAccount() {
 
         ValidatableResponse response = new UserApi().login(user);
@@ -49,9 +50,10 @@ public class LoginUserTest{
         assertEquals("Successful login", HTTP_OK, statusCode);
     }
 
-    @Test
+
     @DisplayName("login with invalid email")
     @Description("trying to login with invalid user information")
+    @Test
     public void loginUserWithInvalidUserAccount() {
         User user = new User("invalid@yandex.ru", "konoha123", "Kakashi");
         ValidatableResponse loginResponse = new UserApi().login(user);
@@ -59,9 +61,10 @@ public class LoginUserTest{
 
         assertEquals("Invalid login information", HTTP_UNAUTHORIZED, statusCode);
     }
-    @Test
+
     @DisplayName("login with invalid password")
     @Description("trying to login with invalid user password")
+    @Test
     public void loginUserWithInvalidUserPassword() {
         User user = new User("raikiri@yandex.ru", "konoha123123123123", "Kakashi");
         ValidatableResponse loginResponse = new UserApi().login(user);

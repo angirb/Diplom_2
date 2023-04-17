@@ -49,9 +49,10 @@ public class UpdateUserTest extends UserApi {
     }
 
 
-    @Test
+
     @DisplayName("change authorized user email and password ")
     @Description("testing user modifying information as email and password")
+    @Test
     public void changeUserEmailPasswordWithAuth() {
         ValidatableResponse response = userApi.login(user);
         String accessToken = response.extract().path("accessToken");
@@ -62,9 +63,10 @@ public class UpdateUserTest extends UserApi {
         data.assertThat().statusCode(SC_OK);
         data.assertThat().body("success", equalTo(true));
     }
-    @Test
+
     @DisplayName("change authorized user email")
     @Description("testing user modifying only email")
+    @Test
     public void changeUserEmailWithAuth() {
         ValidatableResponse response = userApi.login(user);
         String accessToken = response.extract().path("accessToken");
@@ -74,9 +76,10 @@ public class UpdateUserTest extends UserApi {
         data.assertThat().statusCode(SC_OK);
         data.assertThat().body("success", equalTo(true));
     }
-    @Test
+
     @DisplayName("change authorized user password")
     @Description("testing user modifying only password")
+    @Test
     public void changeUserPasswordWithAuth() {
         ValidatableResponse response = userApi.login(user);
         String accessToken = response.extract().path("accessToken");
@@ -87,9 +90,10 @@ public class UpdateUserTest extends UserApi {
         data.assertThat().statusCode(SC_OK);
         data.assertThat().body("success", equalTo(true));
     }
-    @Test
+
     @DisplayName("change unauthorized user information")
     @Description("check if unauthorized user can be modified")
+    @Test
     public void changeUserEmailPasswordWithOutAuth() {
         ValidatableResponse response = userApi.login(user);
         bearerToken = " ";

@@ -34,9 +34,10 @@ public class CreateUserTest extends UserApi {
             userApi.delete(bearerToken);
         }
     }
-    @Test
+
     @DisplayName("creating user with random data")
     @Description("using random generator testing creating user in the system")
+    @Test
     public void createUserWithValidData() {
         User user = UserGenerator.getRandom();
         userApi.create(user)
@@ -45,36 +46,40 @@ public class CreateUserTest extends UserApi {
                 .and()
                 .body("accessToken", notNullValue());
     }
-    @Test
+
     @DisplayName("creating user with data that already exist")
     @Description("creating user that already exist leading to code 403")
+    @Test
     public void createUserWithDataAlreadyExist() {
         UserApi userApi = new UserApi();
         userApi.create(user)
                 .assertThat()
                 .statusCode(SC_FORBIDDEN);
     }
-    @Test
+
     @DisplayName("creating user without name")
     @Description("checking if user can be created without one field-name")
+    @Test
     public void createUserWithoutName() {
         User user = new User("test-dat@yandex.ru", "password", " ");
         userApi.create(user)
                 .assertThat()
                 .statusCode(SC_FORBIDDEN);
     }
-    @Test
+
     @DisplayName("creating user without password")
     @Description("checking if user can be created without password field")
+    @Test
     public void createUserWithoutPassword() {
         User user = new User("test-dat@yandex.ru", "", "KakashiHatake");
         userApi.create(user)
                 .assertThat()
                 .statusCode(SC_FORBIDDEN);
     }
-    @Test
+
     @DisplayName("creating user without email")
     @Description("checking if user can be created without email field")
+    @Test
     public void createUserWithoutEmail() {
         User user = new User("", "password123", "KakashiHatake");
         userApi.create(user)

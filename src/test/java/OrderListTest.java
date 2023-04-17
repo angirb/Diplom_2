@@ -49,25 +49,27 @@ public class OrderListTest {
             userApi.delete(bearerToken);
         }
     }
-    @Test
+
     @DisplayName("get order list with authorization")
     @Description("check if order list can be pulled by authorized user")
+    @Test
     public void authUserCanGetOrderList() {
         ValidatableResponse response = orderApi.getOrderDataList(accessToken);
         int statusCode = response.extract().statusCode();
-
+        boolean bodyJSON = response.extract().path("success");
         assertEquals("некорректный код состояния", 200, statusCode);
-        assertTrue("некорректное тело JSON", true);
+        assertTrue(bodyJSON);
     }
-    @Test
+
     @DisplayName("get order list without authorization")
     @Description("check if order list can be pulled without registration")
+    @Test
     public void unAuthUserCanGetOrderList() {
         ValidatableResponse response = orderApi.getOrderDataListWithOutAuth();
         int statusCode = response.extract().statusCode();
-
+        boolean bodyJSON = response.extract().path("success");
         assertEquals("некорректный код состояния", 401, statusCode);
-        assertFalse("некорректное тело JSON", false);
+        assertFalse(bodyJSON);
     }
 
 }
